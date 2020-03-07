@@ -14,9 +14,8 @@ class DBController {
   }
 
   getCompetitor(comp: String): Promise<any> {
-    // TODO: make sure comp is sanitized
     return new Promise<any>((resolve, reject) => {
-      const query = "SELECT * FROM prices WHERE competitor='" + comp + "\r';";
+      const query = `SELECT * FROM prices WHERE competitor=${conn.escape(comp + "\r")};`;
       conn.query(query, (err: Error, result: any) => {
         if (err) {
           reject(err);
