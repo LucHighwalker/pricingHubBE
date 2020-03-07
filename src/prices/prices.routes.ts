@@ -14,7 +14,7 @@ class Prices {
 			try {
 				const {comp} = req.params;
 
-				const competitor = prices.competitor(comp);
+				const competitor = await prices.competitor(comp);
 				res.status(200).json({
 					competitor
 				});
