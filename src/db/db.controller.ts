@@ -1,4 +1,4 @@
-import conn from "../index"
+import conn from "../index";
 
 class DBController {
   getAll(): Promise<any> {
@@ -7,10 +7,24 @@ class DBController {
         if (err) {
           reject(err);
         } else {
-          resolve(result)
+          resolve(result);
         }
       });
-    })
+    });
+  }
+
+  getCompetitor(comp: String): Promise<any> {
+    // TODO: make sure comp is sanitized
+    return new Promise<any>((resolve, reject) => {
+      const query = "SELECT * FROM prices WHERE competitor='" + comp + "\r';";
+      conn.query(query, (err: Error, result: any) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(result);
+        }
+      });
+    });
   }
 }
 
