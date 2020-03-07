@@ -4,6 +4,8 @@ import * as bodyParser from "body-parser";
 import * as cors from "cors";
 import * as expressSanitizer from 'express-sanitizer';
 
+import pricesRoutes from "./prices/prices.routes";
+
 class Server {
 	public server;
 
@@ -35,7 +37,7 @@ class Server {
 	}
 
 	private mountRoutes(): void {
-		
+		this.server.use("/prices", pricesRoutes);
 	}
 }
 
