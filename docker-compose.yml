@@ -1,0 +1,58 @@
+version: "2"
+services:
+	pricingHubBE:
+		container_name: pricingHubBE
+		restart: always
+		build: .
+		ports:
+			- "%!s(int=4200):%!s(int=4200)"
+		depends_on:
+			- mongo
+		links:
+			- mongo
+		environment:
+			- ENVIRONMENT=prod
+			- HOST_URL=domain.com
+			- PORT=%!s(int=4200)
+			- MONGO_URI=mongodb://mongo:27017/pricingHubBE
+			- JWT_SECRET=averysecretsecret
+			- MAILGUN_API_KEY=amailgunapi
+			- EMAIL_DOMAIN=email.domain.com
+			- WAIT_HOSTS=mongo:27017
+		volumes:
+			- "./src:/usr/src/app/src"
+		logging:
+			driver: "json-file"
+			options:
+				max-size: "1k"
+				max-file: "3"
+	mongo_pricingHubBE:
+		container_name: mongo_pricingHubBE
+		image: mongo
+		volumes:
+			- /data/db
+		ports:
+			- "27017:27017"
+		logging:
+			driver: "json-file"
+			options:
+				max-size: "1k"
+				max-file: "3"
+	portainer_pricingHubBE:
+		container_name: portainer_pricingHubBE
+		image: portainer/portainer
+		command: -H unix:///var/run/docker.sock
+		restart: always
+		ports:
+			- 9000:9000
+		volumes:
+			- /var/run/docker.sock:/var/run/docker.sock
+			- portainer_data:/data
+		logging:
+			driver: "json-file"
+			options:
+				max-size: "1k"
+				max-file: "3"
+
+volumes:
+	portainer_data:
