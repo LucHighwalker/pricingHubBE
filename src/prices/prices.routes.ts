@@ -10,11 +10,11 @@ class Prices {
 
 		this.router.route('/');
 
-		this.router.get('/competitor/:comp', async (req, res) => {
+		this.router.get('/competitor/', async (req, res) => {
 			try {
-				const {comp} = req.params;
+				// const {comp} = req.params;
 
-				const competitor = await prices.competitor(comp);
+				const competitor = await prices.competitor("dsf");
 				res.status(200).json({
 					competitor
 				});
