@@ -1,5 +1,5 @@
 import * as express from "express";
-// import * as mongoose from "mongoose";
+import * as mysql from "mysql";
 import * as bodyParser from "body-parser";
 import * as cors from "cors";
 import * as expressSanitizer from 'express-sanitizer';
@@ -15,13 +15,16 @@ class Server {
 	}
 
 	private connectDb(): void {
-		// const mongo = process.env.MONGO_URI || "mongodb://127.0.0.1:27017/pricingHubBE";
-		// mongoose.connect(mongo, {
-		// 	useNewUrlParser: true,
-		// 	useCreateIndex: true
-		// });
-		// const db = mongoose.connection;
-		// db.on("error", console.error.bind(console, "MongoDB Connection error"));
+		const conn = mysql.createConnection({
+			host: "localhost",
+			user: "root",
+			password: process.env.DB_PASS || "",
+		})
+
+		conn.connect((err) => {
+			if (err) throw err
+			console.log("Database connected!")
+		})
 	}
 
 	private applyMiddleware(): void {
