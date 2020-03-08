@@ -10,11 +10,37 @@ class Prices {
 
 		this.router.route('/');
 
+		this.router.get('/competitor_list', async (req, res) => {
+			try {
+				const competitor = await prices.competitorList();
+				res.status(200).json({
+					competitor
+				});
+			} catch (error) {
+				res.status(500).json({
+					error: error.message
+				});
+			}
+		});
+
+		this.router.get('/competitor/:comp', async (req, res) => {
+			try {
+				const {comp} = req.params;
+
+				const competitor = await prices.competitor(comp);
+				res.status(200).json({
+					competitor
+				});
+			} catch (error) {
+				res.status(500).json({
+					error: error.message
+				});
+			}
+		});
+
 		this.router.get('/competitor/', async (req, res) => {
 			try {
-				// const {comp} = req.params;
-
-				const competitor = await prices.competitor("dsf");
+				const competitor = await prices.getAll();
 				res.status(200).json({
 					competitor
 				});

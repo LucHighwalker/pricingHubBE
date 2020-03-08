@@ -14,7 +14,25 @@ export interface dataResponse {
 class DBController {
   getAll(): Promise<any> {
     return new Promise<any>((resolve, reject) => {
-      conn.query("SELECT * FROM prices;", (err: Error, result: any) => {
+      conn.query(
+        'SELECT DATE_FORMAT(day, "%m/%d/%Y") AS day, price, competitor FROM prices;',
+        (err: Error, result: any) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(this.digestData(result));
+          }
+        }
+      );
+    });
+  }
+
+  getCompetitor(comp: String): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      const query = `SELECT DATE_FORMAT(day, "%m/%d/%Y") AS day, price, competitor FROM prices WHERE competitor=${conn.escape(
+        comp + "\r"
+      )};`;
+      conn.query(query, (err: Error, result: any) => {
         if (err) {
           reject(err);
         } else {
@@ -24,16 +42,14 @@ class DBController {
     });
   }
 
-  getCompetitor(comp: String): Promise<any> {
+  getCompetitorList(): Promise<any> {
     return new Promise<any>((resolve, reject) => {
-      const query = `SELECT * FROM prices WHERE competitor=${conn.escape(
-        comp + "\r"
-      )};`;
+      const query = "SELECT DISTINCT competitor FROM prices";
       conn.query(query, (err: Error, result: any) => {
         if (err) {
           reject(err);
         } else {
-          resolve(this.digestData(result));
+          resolve(result.map(r => r.competitor.replace("\r", "")));
         }
       });
     });
@@ -62,8 +78,8 @@ class DBController {
       }
     });
     Object.keys(dict).forEach(k => {
-      result.push(dict[k])
-    })
+      result.push(dict[k]);
+    });
     return result;
   }
 }
