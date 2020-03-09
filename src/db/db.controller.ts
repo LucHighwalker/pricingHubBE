@@ -58,7 +58,7 @@ class DBController {
     return new Promise<any>((resolve, reject) => {
       const query = `INSERT INTO prices(day,price,competitor) VALUES(${conn.escape(
         date
-      )},${conn.escape(price)},${conn.escape(comp)})`;
+      )},${conn.escape(price)},${conn.escape(comp + "\r")})`;
       conn.query(query, (err: Error, result: any) => {
         if (err) {
           reject(err);
