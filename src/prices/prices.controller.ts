@@ -21,7 +21,18 @@ class PricesController {
         reject(err);
       }
     });
-	}
+  }
+  
+  public addPrice(comp: string, date: string, price: Float32Array): Promise<any> {
+		return new Promise(async (resolve, reject) => {
+      try {
+        const result = await db.addPrice(comp, date, price);
+        resolve(result);
+      } catch (err) {
+        reject(err);
+      }
+    });
+  }
 
   public getAll(): Promise<any> {
     return new Promise(async (resolve, reject) => {

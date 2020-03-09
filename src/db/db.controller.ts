@@ -2,7 +2,6 @@ import conn from "../index";
 
 export interface dataResponse {
   label: String;
-  fill: Boolean;
   data: [
     {
       x: String;
@@ -55,6 +54,21 @@ class DBController {
     });
   }
 
+  addPrice(comp: string, date: string, price: Float32Array): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      const query = `INSERT INTO prices(day,price,competitor) VALUES(${conn.escape(
+        date
+      )},${conn.escape(price)},${conn.escape(comp)})`;
+      conn.query(query, (err: Error, result: any) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(result);
+        }
+      });
+    });
+  }
+
   digestData(data: any): dataResponse[] {
     const dict = {};
     const result = [];
@@ -62,7 +76,6 @@ class DBController {
       if (dict[d.competitor] == undefined) {
         dict[d.competitor] = {
           label: d.competitor,
-          fill: false,
           data: [
             {
               x: d.day,
