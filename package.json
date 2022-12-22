@@ -16,7 +16,7 @@
     "express": "^4.16.4",
     "express-sanitizer": "^1.0.5",
     "handlebars": "^4.7.3",
-    "jsonwebtoken": "^8.4.0",
+    "jsonwebtoken": "^9.0.0",
     "mongodb": "^3.1.13",
     "mongoose": "^5.4.13",
     "mysql": "^2.18.1",
